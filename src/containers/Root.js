@@ -1,8 +1,9 @@
 // Setup settings for the api, namely the firebase app location
-import {setup} from 'safe-api';
+import {setup} from 'safe-api'
+import config from '../config'
 
 setup({
-  firebaseApp: 'safe-api-usage-demo'
+  firebaseApp: config.firebaseApp
 })
 
 import React, { Component } from 'react'

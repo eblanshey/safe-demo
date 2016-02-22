@@ -8,8 +8,6 @@ export class Like extends Component {
   constructor(props) {
     super(props)
 
-    this.countLikes.bind(this)
-
     this.iLike = false
   }
 
@@ -68,6 +66,31 @@ export class Like extends Component {
         {this.iLike?', including me':''}
       </Button>
     )
+  }
+
+  deleteLikeByUserId(userid) {
+    // Likes collection must be loaded
+    const { likesCollection } = this.props
+
+    // The like collection hasn't yet loaded. Just resolve for now. But maybe we should throw an error?
+    // And make another method that checks if the collection is loaded?
+    if (!likesCollection.data) {
+      return Promise.resolve()
+    }
+
+    // The key of the 'likes' collection is the userid that liked. So we're looking for
+    // for the userid supplies as the key.
+    if (likesCollection.data[userid]) {
+      // If the key exists, then we will find the associated like, delete it, then remove it from the collection
+      return this.props.api.deleteEntity(
+        'likes',
+        userid,
+        likesCollection.data[userid].likeid
+      ).then(() => this.props.api.deleteCollectionItem('appLikes-'+this.props.id, this.props.userid, userid))
+    } else {
+      // This user id did not like the app. Resolve.
+      return Promise.resolve()
+    }
   }
 
 }

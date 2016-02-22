@@ -36,5 +36,11 @@ module.exports = {
         loader: 'url-loader?limit=100000'
       }
     ]
+  },
+  resolve: {
+    fallback: [path.join(__dirname, 'node_modules')]
+  },
+  resolveLoader: {
+    fallback: [path.join(__dirname, 'node_modules')]
   }
 };
